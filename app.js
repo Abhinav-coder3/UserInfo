@@ -14,8 +14,8 @@ app.get('/',(req,res)=>{
 
 })
 app.get('/read',async(req,res)=>{
-    let users = await userModel.find();
-    app.render("read",{users})
+    let user = await userModel.find();
+    res.render("read",{user});
 
 })
 app.post('/create',async(req,res)=>{
@@ -25,9 +25,13 @@ app.post('/create',async(req,res)=>{
         email,
         image
     })
-    res.send(createdUser);
+    res.redirect("/read");
 
 })
+app.get('/delete/:id',async(req,res)=>{
+    let user = await userModel.findOneAndDelete({_id:req.params.id});
+    res.redirect("/read");
 
+})
 
 app.listen(3000);
